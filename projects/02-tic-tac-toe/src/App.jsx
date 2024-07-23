@@ -1,13 +1,12 @@
-import { useState } from "react"
-import confetti from "canvas-confetti"
-import { Square } from "./components/Square.jsx"
-import { TURNS } from "./constants.js"
-import { checkWinnerFrom, checkEndGame } from "./logic/board.js"
-import { WinnerModal } from "./components/WinnerModal.jsx"
-import { saveGameToStorage, resetGameStorage } from "./logic/storage/index.js"
+import { useState } from 'react'
+import confetti from 'canvas-confetti'
+import { Square } from './components/Square.jsx'
+import { TURNS } from './constants.js'
+import { checkWinnerFrom, checkEndGame } from './logic/board.js'
+import { WinnerModal } from './components/WinnerModal.jsx'
+import { saveGameToStorage, resetGameStorage } from './logic/storage/index.js'
 
-function App() {
-
+function App () {
   const [board, setBoard] = useState(() => {
     const boardFromStorage = window.localStorage.getItem('board')
     return boardFromStorage ? JSON.parse(boardFromStorage) : Array(9).fill(null)
@@ -17,7 +16,7 @@ function App() {
     const turnFromStorage = window.localStorage.getItem('turn')
     return turnFromStorage ?? TURNS.X
   })
-  
+
   const [winner, setWinner] = useState(null)
 
   const resetGame = () => {
@@ -28,7 +27,6 @@ function App() {
   }
 
   const updateBoard = (index) => {
-
     if (board[index] || winner) return
 
     const newBoard = [...board]
@@ -38,7 +36,7 @@ function App() {
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     setTurn(newTurn)
 
-    //guardar partida
+    // guardar partida
     saveGameToStorage({
       board: newBoard,
       turn: newTurn
@@ -52,14 +50,13 @@ function App() {
     } else if (checkEndGame(newBoard)) {
       setWinner(false)
     }
-
   }
 
-  return  (
-    <main className="board">
+  return (
+    <main className='board'>
       <h1>Tic tac toe</h1>
       <button onClick={resetGame}>Reset del juego</button>
-      <section className="game">
+      <section className='game'>
         {
           board.map((_, index) => {
             return (
@@ -71,12 +68,12 @@ function App() {
         }
       </section>
 
-      <section className="turn">
+      <section className='turn'>
         <Square isSelected={turn === TURNS.X}>{TURNS.X}</Square>
         <Square isSelected={turn === TURNS.O}>{TURNS.O}</Square>
       </section>
 
-      <WinnerModal resetGame={resetGame} winner={winner}/>
+      <WinnerModal resetGame={resetGame} winner={winner} />
 
     </main>
   )
